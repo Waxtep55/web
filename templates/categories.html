@@ -1,0 +1,31 @@
+{% extends 'index.html' %}
+
+{% block title %}О нас - Цитатник.ру{% endblock %}
+
+{% block authorizaton %}
+<a href="/login">Вход</a>
+<a href="/reg">Регистрация</a>
+{% endblock %}
+
+{% block main %}
+<div class="categories">
+    <div class="category">
+        <p><b>Персонажи</b></p>
+        <a href="#">Леви Аккерман</a><br>
+        <a href="#">Евгений Онегин</a><br>
+        <a href="#">Лунтик</a><br>
+    </div>
+    <div class="category">
+        <p><b>Произведения</b></p>
+        <a href="#">Атака титанов</a><br>
+        <a href="#">Евгений Онегин</a><br>
+        <a href="#">Преступление и наказание</a><br>
+    </div>
+    <div class="category">
+        <p><b>Авторы</b></p>
+        <a href="#">Хадзимэ Исаяма</a><br>
+        <a href="#">Пушкин Александр Сергеевич</a><br>
+        <a href="#">Честер Беннингтон</a><br>
+    </div>
+</div>
+{% endblock %}

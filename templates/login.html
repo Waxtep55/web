@@ -1,0 +1,27 @@
+{% extends 'index.html' %}
+
+{% block title %}Вход - Цитатник.ру{% endblock %}
+
+{% block authorizaton %}
+<a href="/login">Вход</a>
+<a href="/reg">Регистрация</a>
+{% endblock %}
+
+{% block main %}
+{% for msg in get_flashed_messages() %}
+    {% if msg == "Регистрация прошла успешно!" %}
+        <p class="message">{{msg}}</p>
+    {% else %}
+        <p class="error">{{msg}}</p>
+    {% endif %}
+{% endfor %}
+<form action="" method="post" class="form">
+    <label for="login" class="label">Логин:</label><br>
+    <input type="text" id="login" name="login"><br>
+    <label for="password" class="label">Пароль:</label><br>
+    <input type="password" id="password" name="password"><br><br>
+    <div class="form_button">
+        <button type="submit" class="button">Войти</button>
+    </div>
+</form>
+{% endblock %}

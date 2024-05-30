@@ -1,0 +1,26 @@
+{% extends 'index.html' %}
+
+{% block title %}Добавление цитаты - Цитатник.ру{% endblock %}
+
+{% block authorizaton %}
+<a href="/create_quote">Добавить цитату</a>
+<a href="/favourite">Избранное</a>
+<a href="/logout">Выход</a>
+{% endblock %}
+
+{% block main %}
+<div class="form_create">
+    <b>Добавление цитаты</b><br><br>
+    <form method="post">
+        <label for="text">Текст цитаты</label><br>
+        <textarea name="text" id="text"></textarea><br>
+        <label for="author">Автор</label><br>
+        <input type="text" id="author" name="author"><br>
+        <label for="composition">Произведение</label><br>
+        <input type="text" id="composition" name="composition"><br>
+        <label for="character">Персонаж</label><br>
+        <input type="text" id="character" name="character"><br>
+        <input type="submit" class="button" value="Добавить">
+    </form>
+</div>
+{% endblock %}
