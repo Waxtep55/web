@@ -8,23 +8,6 @@
 {% endblock %}
 
 {% block main %}
-<div class="filters">
-    <form method="post">
-        <label><b>Поиск</b></label><br><br>
-      <label>Персонаж</label><br>
-        <input type="text" name="character" id="character">
-      <br>
-      <label>Произведение</label><br>
-        <input type="text" name="composition" id="composition">
-      <br>
-        <label>Автор</label><br>
-        <input type="text" name="author" id="author">
-        <br>
-        <label>Текст цитаты</label><br>
-        <textarea name="txt" id="txt"></textarea><br>
-        <input type="submit" value="Найти">
-    </form>
-</div>
 <div class="content">
     {% for quote in quotes %}
         <div class="quote">

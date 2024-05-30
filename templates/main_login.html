@@ -10,20 +10,20 @@
 
 {% block main %}
 <div class="filters">
-    <form action="#" method="get">
+    <form method="post">
         <label><b>Поиск</b></label><br><br>
       <label>Персонаж</label><br>
-        <input type="text">
+        <input type="text" name="character" id="character">
       <br>
       <label>Произведение</label><br>
-        <input type="text">
+        <input type="text" name="composition" id="composition">
       <br>
         <label>Автор</label><br>
-        <input type="text">
+        <input type="text" name="author" id="author">
         <br>
         <label>Текст цитаты</label><br>
-        <textarea></textarea><br>
-        <input type="submit" value="Найти", id="subm_filter">
+        <textarea name="txt" id="txt"></textarea><br>
+        <input type="submit" value="Найти">
     </form>
 </div>
 <div class="content">
@@ -33,12 +33,12 @@
             <div class="quote-nav-block">
                 <div>
                     {% if quote.character != None %}
-                        <strong class="quote-nav"><a href="#">{{quote.character}}</a></strong>
+                        <strong class="quote-nav"><a href="/filter/character/{{quote.character}}">{{quote.character}}</a></strong>
                     {% endif %}
                     {% if quote.composition != None %}
-                        <strong class="quote-nav"><a href="#">{{quote.composition}}</a></strong>
+                        <strong class="quote-nav"><a href="/filter/composition/{{quote.composition}}">{{quote.composition}}</a></strong>
                     {% endif %}
-                    <strong class="quote-nav"><a href="#">{{quote.author}}</a></strong>
+                    <strong class="quote-nav"><a href="/filter/author/{{quote.author}}">{{quote.author}}</a></strong>
                 </div>
                 <button class="favourite"></button>
             </div>
@@ -46,18 +46,22 @@
     {% endfor %}
 </div>
 <div class="right">
-    <div class="random_quote">
+    <div class="right_top">
         <div class="text_random_quote">
             <b>Случайная цитата</b>
         </div>
-        <p class="quote_mini">Никто не скажет, верно ты поступил или нет, пока не столкнешься с последствиями.</p>
+        <p class="quote_mini">{{rand_quote.text}}</p>
         <div class="autor_random_quote">
             <button class="favourite"></button>
-            <strong class="quote-nav-mini"><a href="#">Леви Аккерман</a></strong>
+            {% if rand_quote.character != None %}
+            <strong class="quote-nav-mini"><a href="/filter/character/{{rand_quote.character}}">{{rand_quote.character}}</a></strong>
+            {% else %}
+            <strong class="quote-nav-mini"><a href="/filter/author/{{rand_quote.author}}">{{rand_quote.author}}</a></strong>
+            {% endif %}
         </div>
     </div>
     <br><br>
-    <div class="top10">
+    <div class="right_bottom">
         <div class="text_random_quote">
             <b>Топ 10 цитат</b>
         </div>

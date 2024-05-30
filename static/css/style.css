@@ -154,7 +154,7 @@ p, a, strong, button, .button{
     padding: 0.5vw;
 }
 
-.filters, .right {
+.filters {
     padding: 20px;
     position: fixed;
     top: 9vw;
@@ -166,6 +166,20 @@ p, a, strong, button, .button{
 
 .right {
     right: 2.5vw;
+    position: fixed;
+    top: 9vw;
+}
+
+.right_top, .right_bottom {
+    padding: 20px;
+    overflow-y: auto;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    max-height: 30vh;
+    max-width: 12vw;
+}
+
+.right_top {
+    max-height: 25vh;
 }
 
 .filters {

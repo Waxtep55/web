@@ -1,10 +1,12 @@
-from flask import Flask, render_template, request, redirect, flash
+from flask import Flask, render_template, request, redirect, flash, url_for
 from flask_sqlalchemy import SQLAlchemy
-import re
+from sqlalchemy import distinct
 from flask_login import LoginManager, login_user, login_required, current_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
-# from random_quote import Generate
+import re, random
+
 from UserLogin import UserLogin
+# from random_quote import Generate
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///quotes.db'
@@ -36,6 +38,10 @@ class Users(db.Model):
     def __repr__(self):
         return '<Article %r>' % self.id
 
+def random_quote():
+    id = random.randint(0, int(Quotes.query.count()))
+    return Quotes.query.filter(Quotes.id == id).first()
+
 @login_manager.user_loader
 def load_user(user_id):
     print('load_user')
@@ -43,6 +49,7 @@ def load_user(user_id):
 
 @app.route('/test', methods=['POST', 'GET'])
 def test():
+    print(random_quote())
     if request.method == 'POST':
         print(request.form['кнопу'])
     return render_template('test.html')
@@ -55,6 +62,11 @@ def create_quote():
         author = request.form['author']
         composition = request.form['composition']
         character = request.form['character']
+
+        if composition == '':
+            composition = None
+        if character == '':
+            character = None
 
         quote = Quotes(text=text, author=author, composition=composition, character=character)
 
@@ -77,15 +89,29 @@ def main():
                                      Quotes.character.like(f'%{request.form["character"]}%'),
                                      Quotes.text.like(f'%{request.form["txt"]}%'))
         if current_user.is_authenticated:
-            return render_template('main_login.html', quotes=quotes)
+            return render_template('main_login.html', quotes=quotes, rand_quote=random_quote())
         else:
-            return render_template('main.html', quotes=quotes)
+            return render_template('main.html', quotes=quotes, rand_quote=random_quote())
 
     quotes = Quotes.query.order_by(Quotes.id.desc()).all()
     if current_user.is_authenticated:
-        return render_template('main_login.html', quotes=quotes)
+        return render_template('main_login.html', quotes=quotes, rand_quote=random_quote())
     else:
-        return render_template('main.html', quotes=quotes)
+        return render_template('main.html', quotes=quotes, rand_quote = random_quote())
+
+@app.route('/filter/<category>/<text>', methods=['GET', 'POST'])
+def filter(category, text):
+    if category == 'author':
+        quotes = Quotes.query.filter(Quotes.author == text).all()
+    elif category == 'composition':
+        quotes = Quotes.query.filter(Quotes.composition == text).all()
+    else:
+        quotes = Quotes.query.filter(Quotes.character == text).all()
+    if current_user.is_authenticated:
+        return render_template('filter_login.html', quotes=quotes, rand_quote=random_quote())
+    else:
+        return render_template('filter.html', quotes=quotes, rand_quote=random_quote())
+
 
 @app.route('/favourite')
 @login_required
@@ -153,10 +179,21 @@ def about():
 
 @app.route('/categories')
 def categories():
+    quotes = Quotes.query.all()
+    authors = []
+    compositions = []
+    characters = []
+    for quote in quotes:
+        authors.append(quote.author)
+        compositions.append(quote.composition)
+        characters.append(quote.character)
+    authors = list(set(authors))
+    compositions = list(set(compositions))
+    characters = list(set(characters))
     if current_user.is_authenticated:
-        return render_template('categories_login.html')
+        return render_template('categories_login.html', authors=authors, compositions=compositions, characters=characters)
     else:
-        return render_template('categories.html')
+        return render_template('categories.html', authors=authors, compositions=compositions, characters=characters)
 
 @app.route('/logout')
 def logout():
