@@ -1,8 +1,9 @@
-{% extends 'index.html' %}
+{% extends 'index_admin.html' %}
 
 {% block title %}Цитатник.ру{% endblock %}
 
 {% block authorizaton %}
+<a href="/user_moderation">Модерация пользователей</a>
 <a href="/create_quote">Добавить цитату</a>
 <a href="/favourite">Избранное</a>
 <a href="/logout">Выход</a>
@@ -28,24 +29,28 @@
 </div>
 <div class="content">
     {% for quote in quotes %}
-        <div class="quote">
-            <p class="quote-txt">{{quote.text}}</p>
-            <div class="quote-nav-block">
-                <div>
-                    {% if quote.character != None %}
-                        <strong class="quote-nav"><a href="/filter/character/{{quote.character}}">{{quote.character}}</a></strong>
-                    {% endif %}
-                    {% if quote.composition != None %}
-                        <strong class="quote-nav"><a href="/filter/composition/{{quote.composition}}">{{quote.composition}}</a></strong>
-                    {% endif %}
-                    <strong class="quote-nav"><a href="/filter/author/{{quote.author}}">{{quote.author}}</a></strong>
-                </div>
-                <form method="post" action="/add_to_favourite">
-                    <input type="hidden" name="quote_id" value="{{ quote.id }}">
-                    <button type="submit" class="favourite"></button>
+    <div class="quote">
+        <p class="quote-txt">{{quote.text}}</p>
+        <div class="quote-nav-block">
+            <div>
+                {% if quote.character != None %}
+                    <strong class="quote-nav"><a href="/filter/character/{{quote.character}}">{{quote.character}}</a></strong>
+                {% endif %}
+                {% if quote.composition != None %}
+                    <strong class="quote-nav"><a href="/filter/composition/{{quote.composition}}">{{quote.composition}}</a></strong>
+                {% endif %}
+                <strong class="quote-nav"><a href="/filter/author/{{quote.author}}">{{quote.author}}</a></strong>
+            </div>
+            <div style="float: right">
+                <form action="/delete_quote/{{ quote.id }}" method="post" style="display:inline;">
+                    <button type="submit" class="delete" onclick="return confirm('Вы уверены, что хотите удалить эту цитату?');"></button>
                 </form>
+            <a href="/edit_quote/{{ quote.id }}">
+                <button class="edit"></button>
+            </a>
             </div>
         </div>
+    </div>
     {% endfor %}
 </div>
 <div class="right">

@@ -1,0 +1,59 @@
+{% extends 'index_admin.html' %}
+
+{% block title %}Цитатник.ру{% endblock %}
+
+{% block authorizaton %}
+<a href="/user_moderation">Модерация пользователей</a>
+<a href="/create_quote">Добавить цитату</a>
+<a href="/favourite">Избранное</a>
+<a href="/logout">Выход</a>
+{% endblock %}
+
+{% block main %}
+<div class="filters">
+    <form method="post">
+        <label><b>Поиск</b></label><br><br>
+        <label>Имя пользователя</label><br>
+        <input type="text" name="login" id="login">
+        <br>
+        <label>Почта</label><br>
+        <input type="text" name="email" id="email">
+        <br>
+        <label>Статус администратора</label><br>
+        <select name="admin">
+            <option value="">Все</option>
+            <option value="1">Только администраторы</option>
+            <option value="0">Только обычные пользователи</option>
+        </select>
+        <input type="submit" value="Найти">
+    </form>
+</div>
+<div class="content">
+    {% for user in users %}
+    <div class="quote">
+        <p class="quote-txt">{{user.login}}</p>
+        <p class="quote-txt">{{user.email}}</p>
+        {% if user.admin %}
+            <p class="quote-txt">Администратор</p>
+        {% endif %}
+        <div class="quote-nav-block">
+            <div>
+                <strong class="quote-nav"><a href="#"></a></strong>
+                <strong class="quote-nav"><a href="#"></a></strong>
+                <strong class="quote-nav"><a href="#"></a></strong>
+            </div>
+            <div style="float: right">
+                <form action="/delete_user/{{ user.id }}" method="post" style="display:inline;">
+                    <button type="submit" class="delete" onclick="return confirm('Вы уверены, что хотите удалить этого пользователя?');"></button>
+                </form>
+                <a href="/edit_user/{{ user.id }}">
+                    <button class="edit"></button>
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<div class="right">
+</div>
+{% endblock %}

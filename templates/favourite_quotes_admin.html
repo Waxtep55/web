@@ -1,0 +1,39 @@
+{% extends 'index.html' %}
+
+{% block title %}Избранные Цитаты{% endblock %}
+
+{% block authorizaton %}
+<a href="/user_moderation">Модерация пользователей</a>
+<a href="/create_quote">Добавить цитату</a>
+<a href="/favourite">Избранное</a>
+<a href="/logout">Выход</a>
+{% endblock %}
+
+{% block main %}
+<div class="content">
+    {% if quotes %}
+        {% for quote in quotes %}
+            <div class="quote">
+                <p class="quote-txt">{{ quote.text }}</p>
+                <div class="quote-nav-block">
+                    <div>
+                        {% if quote.character != None %}
+                            <strong class="quote-nav"><a href="/filter/character/{{quote.character}}">{{quote.character}}</a></strong>
+                        {% endif %}
+                        {% if quote.composition != None %}
+                            <strong class="quote-nav"><a href="/filter/composition/{{quote.composition}}">{{quote.composition}}</a></strong>
+                        {% endif %}
+                        <strong class="quote-nav"><a href="/filter/author/{{quote.author}}">{{quote.author}}</a></strong>
+                    </div>
+                    <form method="post" action="/remove_from_favourite">
+                        <input type="hidden" name="quote_id" value="{{ quote.id }}">
+                        <button type="submit" class="delete"></button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>У вас нет избранных цитат.</p>
+    {% endif %}
+</div>
+{% endblock %}

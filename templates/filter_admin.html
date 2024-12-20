@@ -1,31 +1,15 @@
-{% extends 'index.html' %}
+{% extends 'index_admin.html' %}
 
 {% block title %}Цитатник.ру{% endblock %}
 
 {% block authorizaton %}
+<a href="/user_moderation">Модерация пользователей</a>
 <a href="/create_quote">Добавить цитату</a>
 <a href="/favourite">Избранное</a>
 <a href="/logout">Выход</a>
 {% endblock %}
 
 {% block main %}
-<div class="filters">
-    <form method="post">
-        <label><b>Поиск</b></label><br><br>
-      <label>Персонаж</label><br>
-        <input type="text" name="character" id="character">
-      <br>
-      <label>Произведение</label><br>
-        <input type="text" name="composition" id="composition">
-      <br>
-        <label>Автор</label><br>
-        <input type="text" name="author" id="author">
-        <br>
-        <label>Текст цитаты</label><br>
-        <textarea name="txt" id="txt"></textarea><br>
-        <input type="submit" value="Найти">
-    </form>
-</div>
 <div class="content">
     {% for quote in quotes %}
         <div class="quote">
@@ -40,10 +24,14 @@
                     {% endif %}
                     <strong class="quote-nav"><a href="/filter/author/{{quote.author}}">{{quote.author}}</a></strong>
                 </div>
-                <form method="post" action="/add_to_favourite">
-                    <input type="hidden" name="quote_id" value="{{ quote.id }}">
-                    <button type="submit" class="favourite"></button>
+                <div style="float: right">
+                <form action="/delete_quote/{{ quote.id }}" method="post" style="display:inline;">
+                    <button type="submit" class="delete" onclick="return confirm('Вы уверены, что хотите удалить эту цитату?');"></button>
                 </form>
+            <a href="/edit_quote/{{ quote.id }}">
+                <button class="edit"></button>
+            </a>
+            </div>
             </div>
         </div>
     {% endfor %}

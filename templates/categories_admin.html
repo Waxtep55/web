@@ -1,0 +1,33 @@
+{% extends 'index_admin.html' %}
+
+{% block title %}О нас - Цитатник.ру{% endblock %}
+
+{% block authorizaton %}
+<a href="/user_moderation">Модерация пользователей</a>
+<a href="/create_quote">Добавить цитату</a>
+<a href="/favourite">Избранное</a>
+<a href="/logout">Выход</a>
+{% endblock %}
+
+{% block main %}
+<div class="categories">
+    <div class="category">
+        <p><b>Персонажи</b></p>
+        {% for character in characters %}
+            <a href="/filter/character/{{ character }}">{{ character }}</a><br>
+        {% endfor %}
+    </div>
+    <div class="category">
+        <p><b>Произведения</b></p>
+        {% for composition in compositions %}
+        <a href="/filter/composition/{{ composition }}">{{ composition }}</a><br>
+        {% endfor %}
+    </div>
+    <div class="category">
+        <p><b>Авторы</b></p>
+        {% for author in authors %}
+        <a href="/filter/author/{{ author }}">{{ author }}</a><br>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
