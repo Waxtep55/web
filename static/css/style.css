@@ -390,3 +390,37 @@ label[for='favourite']::after{
     font-weight: bold;
     border-radius: 5px;
 }
+
+.search{
+    display: none;
+}
+
+@media (max-width: 800px){
+    .right, .filters {
+        display: none;
+    }
+
+    .content {
+        width: 80vw;
+        padding-top: 20vw;
+    }
+
+    .quote-txt{
+        font-size: 20px;
+    }
+
+    .search{
+        display: block;
+        position: fixed; /* Фиксированное позиционирование */
+        bottom: 20px; /* Отступ от нижней границы */
+        left: 20px; /* Отступ от левой границы */
+        z-index: 1000; /* Обеспечивает расположение поверх других элементов */
+        padding: 10px 20px;
+        background-color: rgba(255, 255, 255, 0.5); /* Цвет фона кнопки */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        color: black; /* Цвет текста кнопки */
+        border: none; /* Убирает рамку */
+        border-radius: 5px; /* Скругляет углы */
+        cursor: pointer; /* Изменяет курсор на указатель */
+    }
+}

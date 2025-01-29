@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, redirect, flash, url_for
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
-from sqlalchemy import distinct
+from flask_ngrok import run_with_ngrok
 from flask_login import LoginManager, login_user, login_required, current_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 import re, random
@@ -15,7 +14,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'a12eidksaa3rpfs4fkasdf'
 db = SQLAlchemy(app)
 
-migrate = Migrate(app, db)
+run_with_ngrok(app)
+
+#migrate = Migrate(app, db)
 
 login_manager = LoginManager(app)
 login_manager.login_view = '/login'
@@ -92,6 +93,8 @@ def main():
                                      Quotes.character.like(f'%{request.form["character"]}%'),
                                      Quotes.text.like(f'%{request.form["txt"]}%'))
         if current_user.is_authenticated:
+            if current_user.admin:
+                return render_template('main_admin.html', quotes=quotes, rand_quote=random_quote())
             return render_template('main_login.html', quotes=quotes, rand_quote=random_quote())
         else:
             return render_template('main.html', quotes=quotes, rand_quote=random_quote())
@@ -274,6 +277,10 @@ def categories():
     else:
         return render_template('categories.html', authors=authors, compositions=compositions, characters=characters)
 
+@app.route('/search')
+def search():
+    return render_template('search.html')
+
 @app.route('/main_admin', methods=['GET', 'POST'])
 @login_required  # Защита маршрута, чтобы только авторизованные пользователи могли получить доступ
 def main_admin():
@@ -410,4 +417,4 @@ def generate():
     return render_template('generate.html')"""
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
